@@ -86,20 +86,41 @@ public class Player {
         this.setHealth((int) Math.round(this.level * 3.33) - this.getHealth()) ;
     }
     
-    public void addExp(int change) {
+    public void addExp(int change) throws InterruptedException {
         this.exp += change;
         if(this.exp > this.getNextExp()) {
             levelUp(1);
         }
     }
-
+    public boolean hasWeapon() {
+        return inventory.size() >=1;
+    }
+    public void addWeapon(Weapon wep) {
+        inventory.add(wep);
+    }
     
-    public void startFight(Player opponent) {
+    public void startFight(Player opponent) throws InterruptedException {
+
+        int player_strength = this.strength;
+        if(this.hasWeapon()) {
+            player_strength += inventory.get(0).getStrengthBonus();
+        }
         boolean alive = true;
         int expGain = opponent.getLevel() * opponent.getHealth();
+
+        System.out.println("You have encountered a " + opponent.getName() + "!");
+        Thread.sleep(500);
+        System.out.println("You get ready to fight...");
+        Thread.sleep(500);
         while(alive){
-            System.out.println("You attack the " + opponent.getName());
-            opponent.setHealth((-1) * this.getStrength());
+            if(this.hasWeapon()) {
+                System.out.println("You attack the " + opponent.getName() + " with your " + inventory.get(0).getName());
+                Thread.sleep(500);
+            }else {
+                System.out.println("You attack the " + opponent.getName());
+                Thread.sleep(500);
+            }
+            opponent.setHealth((-1) * player_strength);
             //check if crab is dead to exit loop
             //dont have to check if player died becuase setHealth() exits if you die
             if(opponent.getHealth() <= 0) {
@@ -108,13 +129,16 @@ public class Player {
             }
             System.out.println("The " + opponent.getName() + " attacks you!");
             this.setHealth((-1) * opponent.getStrength());
+            Thread.sleep(500);
         }
         System.out.println("You have defeated the " + opponent.getName() + "!");
+        Thread.sleep(500);
         System.out.println("The " + opponent.getName() + " dropped " + opponent.getMoney() + " gold!");
         addMoney(opponent.getMoney());
-        addExp(expGain); 
+        addExp(expGain);
+        Thread.sleep(500);
     }
-    public void levelUp(int levels) {
+    public void levelUp(int levels) throws InterruptedException {
         System.out.println("You have leveled up!");
         this.level += levels;
         this.exp %= 10;
@@ -124,8 +148,9 @@ public class Player {
         this.printStats();
 
     }
-    public void printStats() {
+    public void printStats() throws InterruptedException {
         System.out.println("___*YOUR LEVELS*___");
+        Thread.sleep(500);
         System.out.println("Your level : " + this.getLevel());
         System.out.println("Your Health : " + this.getHealth());
         System.out.println("Your Strength : " + this.getStrength());

@@ -14,15 +14,16 @@ public class Game {
 
     static Scanner asdf = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //I love Mrs. Coots
 
         GeneralStore store = new GeneralStore("Anthony's");
         Player player = new Player("Gilgamesh");
         Enemy enemy = new Enemy("Berserker", 8, 2, 1);
+        Enemy goblin = new Enemy("Goblin", 8, 2,1);
         player.startFight(enemy);
         store.prompt(player);
-
+        player.startFight(goblin);
 
 
     }

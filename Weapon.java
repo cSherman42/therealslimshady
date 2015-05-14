@@ -34,4 +34,7 @@ public class Weapon {
     public String getName() {
         return this.name;
     }
+    public int getStrengthBonus() {
+        return this.strength;
+    }
 }
